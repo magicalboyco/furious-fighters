@@ -15,11 +15,11 @@ export function snapshotMenuFrame() { prevFrameKeys = new Set(keysDown); }
 export const CONTROLS = {
   p1: {
     left: 'KeyA', right: 'KeyD', up: 'KeyW', down: 'KeyS',
-    lp: 'KeyU', hp: 'KeyI', lk: 'KeyJ', hk: 'KeyK',
+    lp: 'KeyU', mp: 'KeyI', hp: 'KeyO', lk: 'KeyJ', mk: 'KeyK', hk: 'KeyL',
   },
   p2: {
     left: 'ArrowLeft', right: 'ArrowRight', up: 'ArrowUp', down: 'ArrowDown',
-    lp: 'Numpad7', hp: 'Numpad8', lk: 'Numpad4', hk: 'Numpad5',
+    lp: 'Numpad7', mp: 'Numpad8', hp: 'Numpad9', lk: 'Numpad4', mk: 'Numpad5', hk: 'Numpad6',
   },
 };
 
@@ -51,8 +51,8 @@ export class InputState {
     return {
       up: keysDown.has(c.up), down: keysDown.has(c.down),
       left: keysDown.has(c.left), right: keysDown.has(c.right),
-      lp: keysDown.has(c.lp), hp: keysDown.has(c.hp),
-      lk: keysDown.has(c.lk), hk: keysDown.has(c.hk),
+      lp: keysDown.has(c.lp), mp: keysDown.has(c.mp), hp: keysDown.has(c.hp),
+      lk: keysDown.has(c.lk), mk: keysDown.has(c.mk), hk: keysDown.has(c.hk),
     };
   }
 
@@ -63,8 +63,10 @@ export class InputState {
     const dir = directionCode(r.up, r.down, r.left, r.right, facing);
     const buttons = new Set();
     if (r.lp) buttons.add('lp');
+    if (r.mp) buttons.add('mp');
     if (r.hp) buttons.add('hp');
     if (r.lk) buttons.add('lk');
+    if (r.mk) buttons.add('mk');
     if (r.hk) buttons.add('hk');
 
     const justPressed = new Set();
