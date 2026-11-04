@@ -174,7 +174,7 @@ export class Fighter {
     // Normals.
     for (const [btn, data] of Object.entries(this.char.normals)) {
       if (input.justPressed.has(btn)) {
-        this.startAction(btn.toUpperCase(), { ...data, low: btn === 'lk' || btn === 'hk' ? data.low : false }, 'normal');
+        this.startAction(btn.toUpperCase(), { ...data }, 'normal');
         return;
       }
     }
@@ -221,8 +221,8 @@ export class Fighter {
   }
 
   triggerSpecial(sp, button) {
-    const heavy = button === 'hp' || button === 'hk';
-    const dmg = heavy ? sp.dmg + 2 : sp.dmg;
+    const bonus = button === 'hp' || button === 'hk' ? 2 : button === 'mp' || button === 'mk' ? 1 : 0;
+    const dmg = sp.dmg + bonus;
     this.startAction(sp.name, { ...sp, dmg, range: sp.range || 60 }, sp.kind);
   }
 

@@ -1,124 +1,528 @@
-// Character roster data: stats, normals, and special-move motions.
-// Numpad notation (facing-relative): 1=down-back 2=down 3=down-fwd 4=back 6=fwd 7=up-back 8=up 9=up-fwd
-
-const NORMAL_TEMPLATE = {
-  lp: { dmg: 4, startup: 3, active: 3, recovery: 6, hitstun: 10, blockstun: 7, range: 55, high: true },
-  hp: { dmg: 9, startup: 7, active: 4, recovery: 14, hitstun: 16, blockstun: 11, range: 60, high: true },
-  lk: { dmg: 5, startup: 4, active: 3, recovery: 8, hitstun: 11, blockstun: 8, range: 58, high: false },
-  hk: { dmg: 10, startup: 9, active: 4, recovery: 16, hitstun: 18, blockstun: 12, range: 65, high: false },
+// Female Fury prototype roster — original placeholder visuals, not licensed character art.
+const BASE_NORMALS = {
+  lp:{dmg:4,startup:3,active:3,recovery:6,hitstun:10,blockstun:7,range:52},
+  mp:{dmg:7,startup:5,active:3,recovery:10,hitstun:12,blockstun:9,range:58},
+  hp:{dmg:10,startup:8,active:4,recovery:15,hitstun:16,blockstun:12,range:65},
+  lk:{dmg:4,startup:4,active:3,recovery:7,hitstun:10,blockstun:7,range:56,low:true},
+  mk:{dmg:7,startup:6,active:4,recovery:11,hitstun:13,blockstun:10,range:65,low:true},
+  hk:{dmg:11,startup:10,active:4,recovery:17,hitstun:18,blockstun:13,range:75,low:true},
 };
-
-function normals(overrides = {}) {
-  const out = {};
-  for (const key of Object.keys(NORMAL_TEMPLATE)) {
-    out[key] = { ...NORMAL_TEMPLATE[key], ...(overrides[key] || {}) };
-  }
-  return out;
+function normals(scale=1) {
+  return Object.fromEntries(Object.entries(BASE_NORMALS).map(([k,v])=>[k,{...v,dmg:Math.max(1,Math.round(v.dmg*scale))}]));
 }
 
 export const ROSTER = [
   {
-    id: 'kaida',
-    name: 'KAIDA',
-    color: '#ff5050',
-    accent: '#ffb3b3',
-    walkSpeed: 3.2,
-    jumpPower: 11.5,
-    maxHealth: 100,
-    normals: normals(),
-    specials: [
+    "id": "chun-lee",
+    "name": "CHUN-LEE",
+    "color": "#c92937",
+    "accent": "#ffd36c",
+    "walkSpeed": 3.8,
+    "jumpPower": 12,
+    "maxHealth": 92,
+    "role": "rushdown",
+    "item": "Weighted Anklets",
+    "normalsScale": 1.02,
+    "specials": [
       {
-        name: 'Flame Wave',
-        motion: { type: 'motion', sequence: [2, 3, 6], buttons: ['lp', 'hp'] },
-        kind: 'projectile',
-        dmg: 8, startup: 10, recovery: 20,
-        projectileSpeed: 6.5, projectileLife: 90,
+        "name": "Lantern Rush",
+        "motion": {
+          "type": "motion",
+          "sequence": [
+            2,
+            3,
+            6
+          ],
+          "buttons": [
+            "lp",
+            "mp",
+            "hp"
+          ]
+        },
+        "kind": "sweep",
+        "dmg": 9,
+        "startup": 10,
+        "active": 6,
+        "recovery": 20,
+        "range": 55,
+        "projectileSpeed": 6,
+        "projectileLife": 90,
+        "vx": 4.5
       },
       {
-        name: 'Rising Talon',
-        motion: { type: 'motion', sequence: [6, 2, 3], buttons: ['lp', 'hp'] },
-        kind: 'uppercut',
-        dmg: 13, startup: 4, active: 10, recovery: 22,
-        vy: -10, vx: 2.5, invulnFrames: 8,
-      },
-    ],
+        "name": "Crimson Heel",
+        "motion": {
+          "type": "motion",
+          "sequence": [
+            2,
+            1,
+            4
+          ],
+          "buttons": [
+            "lk",
+            "mk",
+            "hk"
+          ]
+        },
+        "kind": "uppercut",
+        "dmg": 12,
+        "startup": 6,
+        "active": 8,
+        "recovery": 23,
+        "range": 52,
+        "vy": -10,
+        "vx": 2,
+        "invulnFrames": 4
+      }
+    ]
   },
   {
-    id: 'maddox',
-    name: 'SGT. MADDOX',
-    color: '#4da6ff',
-    accent: '#c2e0ff',
-    walkSpeed: 2.8,
-    jumpPower: 11,
-    maxHealth: 105,
-    normals: normals({ hp: { dmg: 10, range: 65 } }),
-    specials: [
+    "id": "june",
+    "name": "JUNE HOLIDAY",
+    "color": "#ed812c",
+    "accent": "#455d70",
+    "walkSpeed": 2.9,
+    "jumpPower": 11,
+    "maxHealth": 102,
+    "role": "trapper",
+    "item": "Survival Kit",
+    "normalsScale": 1,
+    "specials": [
       {
-        name: 'Sonic Barrage',
-        motion: { type: 'charge', holdDir: 4, releaseDir: 6, buttons: ['lp', 'hp'] },
-        kind: 'projectile',
-        dmg: 7, startup: 8, recovery: 18,
-        projectileSpeed: 8, projectileLife: 80,
+        "name": "Safety Flare",
+        "motion": {
+          "type": "motion",
+          "sequence": [
+            2,
+            3,
+            6
+          ],
+          "buttons": [
+            "lp",
+            "mp",
+            "hp"
+          ]
+        },
+        "kind": "projectile",
+        "dmg": 8,
+        "startup": 10,
+        "active": 6,
+        "recovery": 20,
+        "range": 55,
+        "projectileSpeed": 6,
+        "projectileLife": 90,
+        "vx": 4.5
       },
       {
-        name: 'Rocket Knee',
-        motion: { type: 'charge', holdDir: 2, releaseDir: 8, buttons: ['lk', 'hk'] },
-        kind: 'uppercut',
-        dmg: 11, startup: 5, active: 12, recovery: 24,
-        vy: -11, vx: 1.5, invulnFrames: 10,
-      },
-    ],
+        "name": "Emergency Exit",
+        "motion": {
+          "type": "motion",
+          "sequence": [
+            2,
+            1,
+            4
+          ],
+          "buttons": [
+            "lk",
+            "mk",
+            "hk"
+          ]
+        },
+        "kind": "sweep",
+        "dmg": 10,
+        "startup": 6,
+        "active": 8,
+        "recovery": 23,
+        "range": 52,
+        "vy": -10,
+        "vx": 2,
+        "invulnFrames": 0
+      }
+    ]
   },
   {
-    id: 'volkov',
-    name: 'VOLKOV',
-    color: '#66cc66',
-    accent: '#c9f2c9',
-    walkSpeed: 2.5,
-    jumpPower: 10,
-    maxHealth: 115,
-    normals: normals({ hp: { dmg: 12, range: 50 }, hk: { dmg: 13, range: 55 } }),
-    specials: [
+    "id": "lana",
+    "name": "LANA CRAFT",
+    "color": "#e4c13c",
+    "accent": "#5c4238",
+    "walkSpeed": 3.7,
+    "jumpPower": 12,
+    "maxHealth": 93,
+    "role": "mobile",
+    "item": "Grappling Hook",
+    "normalsScale": 1,
+    "specials": [
       {
-        name: 'Siberian Slam',
-        motion: { type: 'motion', sequence: [4, 1, 2, 3, 6], buttons: ['lp', 'hp'] },
-        kind: 'grab',
-        dmg: 20, startup: 3, active: 4, recovery: 26,
-        range: 50,
+        "name": "Relic Shot",
+        "motion": {
+          "type": "motion",
+          "sequence": [
+            2,
+            3,
+            6
+          ],
+          "buttons": [
+            "lp",
+            "mp",
+            "hp"
+          ]
+        },
+        "kind": "projectile",
+        "dmg": 8,
+        "startup": 10,
+        "active": 6,
+        "recovery": 20,
+        "range": 55,
+        "projectileSpeed": 6,
+        "projectileLife": 90,
+        "vx": 4.5
       },
-    ],
+      {
+        "name": "Hook Swing",
+        "motion": {
+          "type": "motion",
+          "sequence": [
+            2,
+            1,
+            4
+          ],
+          "buttons": [
+            "lk",
+            "mk",
+            "hk"
+          ]
+        },
+        "kind": "uppercut",
+        "dmg": 11,
+        "startup": 6,
+        "active": 8,
+        "recovery": 23,
+        "range": 52,
+        "vy": -10,
+        "vx": 2,
+        "invulnFrames": 4
+      }
+    ]
   },
   {
-    id: 'meilin',
-    name: 'MEI LIN',
-    color: '#ffcc33',
-    accent: '#fff0bf',
-    walkSpeed: 3.6,
-    jumpPower: 12,
-    maxHealth: 90,
-    normals: normals({ lp: { startup: 2, recovery: 4 }, lk: { startup: 3, recovery: 5 } }),
-    specials: [
+    "id": "zika",
+    "name": "ZIKA",
+    "color": "#236b44",
+    "accent": "#bc9959",
+    "walkSpeed": 2.8,
+    "jumpPower": 10.5,
+    "maxHealth": 110,
+    "role": "grappler",
+    "item": "Saw Discus",
+    "normalsScale": 1.08,
+    "specials": [
       {
-        name: 'Crane Sweep',
-        motion: { type: 'motion', sequence: [2, 1, 4], buttons: ['lk', 'hk'] },
-        kind: 'sweep',
-        dmg: 9, startup: 6, active: 8, recovery: 20,
-        vx: 5.5,
+        "name": "Discus Toss",
+        "motion": {
+          "type": "motion",
+          "sequence": [
+            2,
+            3,
+            6
+          ],
+          "buttons": [
+            "lp",
+            "mp",
+            "hp"
+          ]
+        },
+        "kind": "projectile",
+        "dmg": 9,
+        "startup": 10,
+        "active": 6,
+        "recovery": 20,
+        "range": 55,
+        "projectileSpeed": 6,
+        "projectileLife": 90,
+        "vx": 4.5
       },
-    ],
+      {
+        "name": "Damsel Takedown",
+        "motion": {
+          "type": "motion",
+          "sequence": [
+            2,
+            1,
+            4
+          ],
+          "buttons": [
+            "lk",
+            "mk",
+            "hk"
+          ]
+        },
+        "kind": "grab",
+        "dmg": 16,
+        "startup": 6,
+        "active": 8,
+        "recovery": 23,
+        "range": 52,
+        "vy": -10,
+        "vx": 2,
+        "invulnFrames": 0
+      }
+    ]
   },
-];
-
-export function getCharacter(id) {
-  return ROSTER.find((c) => c.id === id);
-}
-
-// To attach real art once you have original sprite sheets (e.g. from SpriteCook,
-// or an atlas exported from Aseprite/TexturePacker), set `spriteSrc` + `spriteMeta`
-// on a roster entry above, then load it in main.js:
-//
-//   import { SpriteSheet } from './sprite.js';
-//   const kaida = getCharacter('kaida');
-//   kaida.sprite = await SpriteSheet.load(kaida.spriteSrc, kaida.spriteMeta);
-//
-// Characters with no `sprite` set just render as the placeholder shapes.
+  {
+    "id": "weather",
+    "name": "WEATHER GIRL",
+    "color": "#203f78",
+    "accent": "#f4d453",
+    "walkSpeed": 3,
+    "jumpPower": 11,
+    "maxHealth": 98,
+    "role": "zoner",
+    "item": "Umbrella",
+    "normalsScale": 1,
+    "specials": [
+      {
+        "name": "Storm Warning",
+        "motion": {
+          "type": "motion",
+          "sequence": [
+            2,
+            3,
+            6
+          ],
+          "buttons": [
+            "lp",
+            "mp",
+            "hp"
+          ]
+        },
+        "kind": "projectile",
+        "dmg": 8,
+        "startup": 10,
+        "active": 6,
+        "recovery": 20,
+        "range": 55,
+        "projectileSpeed": 6,
+        "projectileLife": 90,
+        "vx": 4.5
+      },
+      {
+        "name": "Umbrella Lift",
+        "motion": {
+          "type": "motion",
+          "sequence": [
+            2,
+            1,
+            4
+          ],
+          "buttons": [
+            "lk",
+            "mk",
+            "hk"
+          ]
+        },
+        "kind": "uppercut",
+        "dmg": 11,
+        "startup": 6,
+        "active": 8,
+        "recovery": 23,
+        "range": 52,
+        "vy": -10,
+        "vx": 2,
+        "invulnFrames": 4
+      }
+    ]
+  },
+  {
+    "id": "samantha",
+    "name": "SAMANTHA URANUS",
+    "color": "#523c95",
+    "accent": "#98eaf0",
+    "walkSpeed": 2.65,
+    "jumpPower": 10.5,
+    "maxHealth": 110,
+    "role": "heavy zoner",
+    "item": "Arm Cannon",
+    "normalsScale": 1.06,
+    "specials": [
+      {
+        "name": "Reactor Burst",
+        "motion": {
+          "type": "motion",
+          "sequence": [
+            2,
+            3,
+            6
+          ],
+          "buttons": [
+            "lp",
+            "mp",
+            "hp"
+          ]
+        },
+        "kind": "projectile",
+        "dmg": 10,
+        "startup": 10,
+        "active": 6,
+        "recovery": 20,
+        "range": 55,
+        "projectileSpeed": 6,
+        "projectileLife": 90,
+        "vx": 4.5
+      },
+      {
+        "name": "Jet Launch",
+        "motion": {
+          "type": "motion",
+          "sequence": [
+            2,
+            1,
+            4
+          ],
+          "buttons": [
+            "lk",
+            "mk",
+            "hk"
+          ]
+        },
+        "kind": "uppercut",
+        "dmg": 12,
+        "startup": 6,
+        "active": 8,
+        "recovery": 23,
+        "range": 52,
+        "vy": -10,
+        "vx": 2,
+        "invulnFrames": 4
+      }
+    ]
+  },
+  {
+    "id": "plum",
+    "name": "PRINCESS PLUM",
+    "color": "#b59adf",
+    "accent": "#6d3d94",
+    "walkSpeed": 3.2,
+    "jumpPower": 12,
+    "maxHealth": 95,
+    "role": "all-rounder",
+    "item": "Royal Parasol",
+    "normalsScale": 1,
+    "specials": [
+      {
+        "name": "Plum Toss",
+        "motion": {
+          "type": "motion",
+          "sequence": [
+            2,
+            3,
+            6
+          ],
+          "buttons": [
+            "lp",
+            "mp",
+            "hp"
+          ]
+        },
+        "kind": "projectile",
+        "dmg": 8,
+        "startup": 10,
+        "active": 6,
+        "recovery": 20,
+        "range": 55,
+        "projectileSpeed": 6,
+        "projectileLife": 90,
+        "vx": 4.5
+      },
+      {
+        "name": "Parasol Pop",
+        "motion": {
+          "type": "motion",
+          "sequence": [
+            2,
+            1,
+            4
+          ],
+          "buttons": [
+            "lk",
+            "mk",
+            "hk"
+          ]
+        },
+        "kind": "uppercut",
+        "dmg": 12,
+        "startup": 6,
+        "active": 8,
+        "recovery": 23,
+        "range": 52,
+        "vy": -10,
+        "vx": 2,
+        "invulnFrames": 4
+      }
+    ]
+  },
+  {
+    "id": "jd",
+    "name": "JD BEIGE",
+    "color": "#c6b494",
+    "accent": "#ffffff",
+    "walkSpeed": 2.85,
+    "jumpPower": 10,
+    "maxHealth": 106,
+    "role": "challenge bruiser",
+    "item": "Cargo Pockets",
+    "normalsScale": 0.54,
+    "specials": [
+      {
+        "name": "Tactical Puff",
+        "motion": {
+          "type": "motion",
+          "sequence": [
+            2,
+            3,
+            6
+          ],
+          "buttons": [
+            "lp",
+            "mp",
+            "hp"
+          ]
+        },
+        "kind": "projectile",
+        "dmg": 5,
+        "startup": 10,
+        "active": 6,
+        "recovery": 20,
+        "range": 55,
+        "projectileSpeed": 6,
+        "projectileLife": 90,
+        "vx": 4.5
+      },
+      {
+        "name": "Maximum Effort",
+        "motion": {
+          "type": "motion",
+          "sequence": [
+            2,
+            1,
+            4
+          ],
+          "buttons": [
+            "lk",
+            "mk",
+            "hk"
+          ]
+        },
+        "kind": "uppercut",
+        "dmg": 8,
+        "startup": 6,
+        "active": 8,
+        "recovery": 23,
+        "range": 52,
+        "vy": -10,
+        "vx": 2,
+        "invulnFrames": 4
+      }
+    ]
+  }
+].map(({normalsScale,...c})=>({...c,normals:normals(normalsScale)}));
+export function getCharacter(id){return ROSTER.find(c=>c.id===id);}

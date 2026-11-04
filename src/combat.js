@@ -27,7 +27,9 @@ function resolveMelee(attacker, defender) {
   if (!overlap(hitbox, defender.hurtbox())) return;
 
   attacker.hitThisAction = true;
-  const blocked = defender.blocking && defender.state !== 'hitstun';
+  const raw = defender.input.raw();
+  const back = defender.facing === 1 ? raw.left : raw.right;
+  const blocked = back && defender.grounded && defender.stunTimer <= 0 && (!a.data.low || raw.down);
   defender.applyHit({
     dmg: a.data.dmg,
     pushback: attacker.facing * (blocked ? 2.5 : 4.5),
@@ -55,7 +57,8 @@ export function resolveCombat(f1, f2, projectiles) {
     const target = proj.owner === f1 ? f2 : f1;
     if (overlap(proj.hurtbox(), target.hurtbox())) {
       proj.dead = true;
-      const blocked = target.blocking;
+      const raw = target.input.raw();
+      const blocked = (target.facing === 1 ? raw.left : raw.right) && target.grounded && target.stunTimer <= 0;
       target.applyHit({
         dmg: proj.dmg,
         pushback: (proj.vx > 0 ? 1 : -1) * (blocked ? 2 : 3.5),
