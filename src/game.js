@@ -137,7 +137,7 @@ export class Game {
 
     if (this.phase === 'title') {
       drawStage(ctx);
-      drawBanner(ctx, 'NEON RIVALS', 'TURBO EDITION  —  Press any Punch to start');
+      drawBanner(ctx, 'FURIOUS FIGHTERS', 'Press any Punch to start');
       return;
     }
 

@@ -1,4 +1,4 @@
-# Neon Rivals: Turbo Edition
+# Furious Fighters
 
 A browser-based 2D fighter in the spirit of classic arcade fighting games —
 health bars, a round timer, best-of-3 matches, and motion-input special
