@@ -122,7 +122,7 @@ export class Game {
   }
 
   updateMatchEnd() {
-    const anyButton = ['lp', 'hp', 'lk', 'hk'].some(
+    const anyButton = ['lp', 'mp', 'hp', 'lk', 'mk', 'hk'].some(
       (b) => justPressedKey(CONTROLS.p1[b]) || justPressedKey(CONTROLS.p2[b])
     );
     if (anyButton) {
@@ -137,7 +137,7 @@ export class Game {
 
     if (this.phase === 'title') {
       drawStage(ctx);
-      drawBanner(ctx, 'FURIOUS FIGHTERS', 'Press any Punch to start');
+      drawBanner(ctx, 'FEMALE FURY', 'Press any Punch to start');
       return;
     }
 
@@ -164,15 +164,15 @@ export class Game {
     ctx.font = 'bold 28px monospace';
     ctx.fillText('CHOOSE YOUR FIGHTER', 480, 60);
 
-    const cols = ROSTER.length;
-    const slotW = 160, startX = 480 - (cols * slotW) / 2;
+    const cols = 4;
+    const slotW = 190, startX = 480 - (cols * slotW) / 2;
     ROSTER.forEach((c, i) => {
-      const x = startX + i * slotW + slotW / 2;
-      const y = 220;
+      const x = startX + (i % cols) * slotW + slotW / 2;
+      const y = 165 + Math.floor(i / cols) * 175;
       ctx.fillStyle = c.color;
       ctx.fillRect(x - 50, y - 50, 100, 100);
       ctx.fillStyle = '#fff';
-      ctx.font = '14px monospace';
+      ctx.font = '12px monospace';
       ctx.fillText(c.name, x, y + 70);
 
       if (this.select.p1 === i) {
