@@ -1,5 +1,7 @@
 # Furious Fighters
 
+**Play:** https://magicalboyco.github.io/furious-fighters/ (served from `main` / root once Settings > Pages is set to deploy from a branch. Not verified live as of 2026-11-06.)
+
 A browser-based 2D fighter in the spirit of classic arcade fighting games —
 health bars, a round timer, best-of-3 matches, and motion-input special
 moves — built with plain HTML5 Canvas and vanilla JavaScript. No build step,
